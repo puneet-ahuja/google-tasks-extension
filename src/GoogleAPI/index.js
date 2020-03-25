@@ -2,7 +2,6 @@
 
 
 
-
 // Array of API discovery doc URLs for APIs used by the quickstart
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest"];
 
@@ -62,6 +61,8 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
           }).then(function(response) {
               // TODO : Need to Add Data to Redux Store After Retrieval.
             var taskLists = response.result.items;
+            console.log('Data Received is Task List.');
+            console.log(taskLists)
             if (taskLists && taskLists.length > 0) {
               for (var i = 0; i < taskLists.length; i++) {
                 var taskList = taskLists[i];

@@ -1,0 +1,41 @@
+.tasklists-container {
+    width: 412px;
+    border-right: 1px solid #dadce0;
+    height: 100vh;
+}
+
+.task-list-header {
+    padding: 10px 50px;
+    border-bottom: 1px solid #dadce0;
+}
+
+.button-style {
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    line-height: 34px;
+    padding: 0 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.list-element {
+    height: 50px;
+    padding: 6px 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drag-drop-icon {
+    width: 50px;
+}
+
+.list-data{
+    display: flex;
+    align-items: center;
+}
+
+.triple-dot-style {
+    width: 20px;
+}
