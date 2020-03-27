@@ -1,4 +1,11 @@
+import { setTasklists } from '../actions';
+
 // TODO : Need to add Keys from Here.
+
+
+
+// TODO : Need to do this in a clean way.
+let dispatchAction = undefined;
 
 
 
@@ -25,7 +32,8 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
     }
   }
   
-   export  const loadTasksApi = () =>  {
+   export  const loadTasksApi = ({dispatch}) =>  {
+    dispatchAction = dispatch;
       const script = document.createElement("script");
       
       script.src = "https://apis.google.com/js/api.js";
@@ -59,17 +67,11 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
           window.gapi.client.tasks.tasklists.list({
               'maxResults': 10
           }).then(function(response) {
-              // TODO : Need to Add Data to Redux Store After Retrieval.
             var taskLists = response.result.items;
             console.log('Data Received is Task List.');
             console.log(taskLists)
-            if (taskLists && taskLists.length > 0) {
-              for (var i = 0; i < taskLists.length; i++) {
-                var taskList = taskLists[i];
-                console.log(taskList.title + ' (' + taskList.id + ')');
-              }
-            } else {
-              console.log('No task lists found.');
+            if (dispatchAction ){
+              dispatchAction(setTasklists(taskLists));
             }
           });
         }

@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import {loadTasksApi } from './GoogleAPI'
-import Header from './components/Header'
+import Header from './containers/Header'
 import MainComponent from './components/MainComponent'
+import { connect } from 'react-redux';
 
 
 
 
-function App() {
+function App({dispatch}) {
 
 
 
   // This Component Will work Similar to Component Did Mount
-  useEffect(loadTasksApi);
+  useEffect(()=>loadTasksApi({dispatch}));
 
 
   return (
@@ -23,4 +24,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect()(App);
