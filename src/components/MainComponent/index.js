@@ -1,5 +1,5 @@
 import React from 'react';
-import TaskLists from '../TaskLists';
+import TaskLists from '../../containers/TaskLists';
 import './index.css'
 
 const MainComponent = () => {
