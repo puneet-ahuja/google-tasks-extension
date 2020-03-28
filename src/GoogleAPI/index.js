@@ -79,19 +79,14 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
         
 
     export const  getTasklist = ({listId}) => {
-
-        window.gapi.client.tasks.tasklists.list({
+        window.gapi.client.tasks.tasks.list({
             'maxResults': 10,
             tasklist: listId
         }).then(function(response) {
           var taskList = response.result.items;
-          console.log(response)
           if (dispatchAction ){
-            console.log('Data Requested for ID',listId);
             dispatchAction(setTasklist(taskList, listId));
           }
-          
-
         });
       }
 

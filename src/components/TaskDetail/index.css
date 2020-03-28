@@ -1,0 +1,22 @@
+.task-detail-container {
+    min-width: 300px;
+    width: 30%;
+}
+
+.task-detail-header {
+    height: 50px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calendar-icon {
+    width: 20px;
+}
+
+.task-detail-description {
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 10px;
+}
