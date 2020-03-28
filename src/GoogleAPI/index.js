@@ -1,7 +1,7 @@
-import { setTasklists } from '../actions';
+import { setTasklists, setTasklist } from '../actions';
 
-// TODO : Need to add Keys from Here.
-
+var CLIENT_ID =
+        "388529190966-h6jt68745ge563i9nt4apmrpmk8pedbr.apps.googleusercontent.com";
 
 
 // TODO : Need to do this in a clean way.
@@ -12,6 +12,7 @@ let dispatchAction = undefined;
 // Array of API discovery doc URLs for APIs used by the quickstart
 var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest"];
 
+// What all permissions are required depends on this.
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
@@ -22,7 +23,6 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
   *  appropriately. After a sign-in, the API is called.
   */
  const updateSigninStatus = (isSignedIn) => {
-    console.log('Sighned in Status Change',isSignedIn)
     // TODO : need to update Status from Here to Redux Store.
    //setSighnedIn(isSignedIn);
     if (isSignedIn) {
@@ -40,17 +40,18 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
     
       script.onload = () => {
         window.gapi.load('client:auth2', () => {
-          window.gapi.client.init({
-            apiKey: API_KEY,
+          window.gapi.client.init(
+            {
             clientId: CLIENT_ID,
             discoveryDocs: DISCOVERY_DOCS,
             scope: SCOPES
-          }).then(function () {
+          }
+          ).then(function () {
             // Listen for sign-in state changes.
-            window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+              window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
   
-            // Handle the initial sign-in state.
-            updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+              // Handle the initial sign-in state.
+              updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get());
           }, function(error) {
             console.log('There is error Connecting to the Application')
           });
@@ -68,21 +69,54 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
               'maxResults': 10
           }).then(function(response) {
             var taskLists = response.result.items;
-            console.log('Data Received is Task List.');
-            console.log(taskLists)
             if (dispatchAction ){
               dispatchAction(setTasklists(taskLists));
             }
           });
+
         }
+
+        
+
+    export const  getTasklist = ({listId}) => {
+
+        window.gapi.client.tasks.tasklists.list({
+            'maxResults': 10,
+            tasklist: listId
+        }).then(function(response) {
+          var taskList = response.result.items;
+          console.log(response)
+          if (dispatchAction ){
+            console.log('Data Requested for ID',listId);
+            dispatchAction(setTasklist(taskList, listId));
+          }
+          
+
+        });
+      }
+
+          
   
     /**
          *  Sign in the user upon button click.
          */
         export const handleAuthClick = (event) => {
-          window.gapi.auth2.getAuthInstance().signIn();
+          if(window.gapi.auth2.getAuthInstance()){
+            const userDetails = window.gapi.auth2.getAuthInstance().signIn();
+            console.log(userDetails);
+          }
         }
+
+
+        // TODO : Need to check for the cleaner way toget user details.
   
+        // function onSignIn(profile) {
+          
+        //   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        //   console.log('Name: ' + profile.getName());
+        //   console.log('Image URL: ' + profile.getImageUrl());
+        //   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        // }
         /**
          *  Sign out the user upon button click.
          */
