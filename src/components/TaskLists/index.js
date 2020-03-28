@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { getTasklist } from '../../GoogleAPI';
 import './index.css'
 import { tripleDotSVG, dragDropSVG } from '../../constants/svgs'
+import classnames from 'classnames'
 
 const defaultList = [
     {
@@ -31,12 +32,16 @@ const defaultList = [
     }
 ]
 
-const ListElement = ({title}) =>{
+const ListElement = ({title, id, selectedList, setSelectedList}) =>{
+    const selected = id === selectedList;
     return (
         <div className={'list-element'}>
             <div className='list-data'>
                 <div className={'drag-drop-icon'}>{dragDropSVG}</div>
-                {title}
+                <div 
+                    className={classnames('tasklists-title',{"selected-title":selected})}
+                    onClick={()=>setSelectedList(id)}
+                >{title}</div>
             </div>
             <div className='triple-dot-style'>
                 {tripleDotSVG}
@@ -45,29 +50,27 @@ const ListElement = ({title}) =>{
     )
 }
 
-// TODO : Will change selected element on the basis of click.
 
-const TaskLists = ({lists}) => {
+const TaskLists = ({lists,selectedList, setSelectedList}) => {
 
     useEffect(() => {
-        if(lists && lists.length){
-            const listId = lists[0].id;
-            getTasklist({listId});
-        }
-    },[lists]);
+        selectedList && getTasklist({listId:selectedList});
+    },[selectedList]);
 
     return (
         <div className='tasklists-container'>
             <div className='task-lists-header'>
                 <div className='button-style'>Create New List</div>
             </div>
-            {lists.map((listDetails)=><ListElement key={listDetails.id} {...listDetails} />)}
+            {lists.map((listDetails)=><ListElement key={listDetails.id} {...listDetails} selectedList={selectedList} setSelectedList={setSelectedList}/>)}
         </div>
     )
 }
 
 TaskLists.propTypes = {
-    lists: PropTypes.array
+    lists: PropTypes.array,
+    selectedList: PropTypes.string,
+    setSelectedList: PropTypes.func.isRequired
 }
 
 TaskLists.defaultProps = {
