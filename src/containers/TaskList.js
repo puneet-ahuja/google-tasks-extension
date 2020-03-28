@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import TaskList from '../components/TaskList'
 
 const mapStateToProps = (state)=>{
-    const selectedList = 'MDcwODg3ODM1MTgxMDkyODE2ODU6MDow';
+    const { tasklists: { selectedList }} = state
     return {
         list: state.tasklist[selectedList]
     }

@@ -40,3 +40,7 @@
 .triple-dot-style {
     width: 20px;
 }
+
+.selected-title {
+    color: cadetblue;
+}

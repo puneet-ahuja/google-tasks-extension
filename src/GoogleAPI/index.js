@@ -1,4 +1,5 @@
-import { setTasklists, setTasklist } from '../actions';
+import { setTasklist } from '../actions/tasklist';
+import { setTasklists } from '../actions/tasklists';
 
 var CLIENT_ID =
         "388529190966-h6jt68745ge563i9nt4apmrpmk8pedbr.apps.googleusercontent.com";
@@ -61,9 +62,7 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
       document.body.appendChild(script);
     }
   
-   /**
-         * Print task lists.
-         */
+
         const listTaskLists = () => {
           window.gapi.client.tasks.tasklists.list({
               'maxResults': 10
