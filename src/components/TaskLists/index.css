@@ -1,10 +1,11 @@
 .tasklists-container {
-    width: 412px;
+    width: 25%;
+    min-width: 300px;
     border-right: 1px solid #dadce0;
-    height: 100vh;
+    min-height: 100vh;
 }
 
-.task-list-header {
+.task-lists-header {
     padding: 10px 50px;
     border-bottom: 1px solid #dadce0;
 }

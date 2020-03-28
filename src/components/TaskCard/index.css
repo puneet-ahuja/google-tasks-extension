@@ -1,0 +1,20 @@
+.task-card-container{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    height: 50px;
+    padding: 6px 0;
+    box-sizing: border-box;
+}
+
+.card-data {
+    display: flex;
+    align-items: center;
+}
+
+.circle {
+    height: 20px;
+    width: 20px;
+    border: 1px solid black;
+    border-radius: 50%;
+}
