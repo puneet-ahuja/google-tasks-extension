@@ -5,7 +5,7 @@ import { setSelectedList } from '../actions/tasklists'
 const mapStateToProps = (state)=>{
     return {
         lists: state.tasklists.lists,
-        selectedList: state.tasklists.selectedList
+        selectedListId: state.tasklists.selectedList.id
     }
 }
 
