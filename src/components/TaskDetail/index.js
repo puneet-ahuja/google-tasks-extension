@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import './index.css'
 import { calendarIcon } from '../../constants/svgs'
 
-const TaskDetail = ({id,title,description}) => {
+const TaskDetail = ({id,title,notes}) => {
     return (
         <div className={'task-detail-container'}>
             <div className='task-detail-header'>
                 <div>{title}</div>
                 <div className={'calendar-icon'}>{calendarIcon}</div>
             </div>
-            <div className='task-detail-description'>
-                {description}
+            <div className='task-detail-notes'>
+                {notes}
             </div>
         </div>
     )
@@ -26,7 +26,7 @@ TaskDetail.propTypes = {
 TaskDetail.defaultProps = {
     id: '1',
     title: 'This is Dummy Title',
-    description: 'This is some dummy Description'
+    notes: 'This is some dummy Notes'
 }
 
 
