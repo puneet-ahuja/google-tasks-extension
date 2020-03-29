@@ -1,12 +1,13 @@
 const initialState = {
-  lists:[]
+  lists:[],
+  selectedList: {}
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
       case 'SET_TASKLISTS':
         return {
-          selectedList: action.lists[0].id,
+          selectedList: action.lists[0],
           lists: action.lists
         }
 

@@ -32,15 +32,16 @@ const defaultList = [
     }
 ]
 
-const ListElement = ({title, id, selectedList, setSelectedList}) =>{
-    const selected = id === selectedList;
+const ListElement = ({listDetails, selectedListId, setSelectedList}) =>{
+    const { title, id } = listDetails
+    const selected = id === selectedListId;
     return (
         <div className={'list-element'}>
             <div className='list-data'>
                 <div className={'drag-drop-icon'}>{dragDropSVG}</div>
                 <div 
                     className={classnames('tasklists-title',{"selected-title":selected})}
-                    onClick={()=>setSelectedList(id)}
+                    onClick={()=>setSelectedList(listDetails)}
                 >{title}</div>
             </div>
             <div className='triple-dot-style'>
@@ -51,25 +52,25 @@ const ListElement = ({title, id, selectedList, setSelectedList}) =>{
 }
 
 
-const TaskLists = ({lists,selectedList, setSelectedList}) => {
+const TaskLists = ({lists,selectedListId, setSelectedList}) => {
 
     useEffect(() => {
-        selectedList && getTasklist({listId:selectedList});
-    },[selectedList]);
+        selectedListId && getTasklist({listId:selectedListId});
+    },[selectedListId]);
 
     return (
         <div className='tasklists-container'>
             <div className='task-lists-header'>
                 <div className='button-style'>Create New List</div>
             </div>
-            {lists.map((listDetails)=><ListElement key={listDetails.id} {...listDetails} selectedList={selectedList} setSelectedList={setSelectedList}/>)}
+            {lists.map((listDetails)=><ListElement key={listDetails.id} listDetails={listDetails} selectedListId={selectedListId} setSelectedList={setSelectedList}/>)}
         </div>
     )
 }
 
 TaskLists.propTypes = {
     lists: PropTypes.array,
-    selectedList: PropTypes.string,
+    selectedListId: PropTypes.string,
     setSelectedList: PropTypes.func.isRequired
 }
 
