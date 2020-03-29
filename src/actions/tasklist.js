@@ -4,5 +4,5 @@ export const setTasklist = (list, listId)=>{
         list,
         listId
     }
-    
 }
+
