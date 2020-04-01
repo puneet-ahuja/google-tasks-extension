@@ -4,11 +4,19 @@
     padding: 0 15px;
     cursor: pointer;
     font-size: 14px;
-    background-color:  rgb(25, 150, 240);
     text-align: center;
     color: white;
 }
 
-.primary-button:hover {
+.enabled-primary-button {
+    background-color:  rgb(25, 150, 240); 
+}
+
+.enabled-primary-button:hover {
     background-color: #f1f3f4;
+}
+
+.disabled-primary-button {
+    background-color: #6c757d;
+    cursor: not-allowed;
 }
