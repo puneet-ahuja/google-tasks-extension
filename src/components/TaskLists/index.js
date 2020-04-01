@@ -65,12 +65,25 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
         setShowAddListForm(!showAddListForm);
     }
 
+    const hideAddListForm = () => {
+        setShowAddListForm(false);
+    }
+
+    const addListHandler = listName => {
+        console.log(listName);
+    }
+
     return (
         <div className='tasklists-container'>
             <div className='task-lists-header'>
                 <div className='button-style' onClick={toggleShowAddListForm}>Create New List</div>
             </div>
-            {showAddListForm && <AddListForm/>}
+            {showAddListForm && 
+                <AddListForm
+                    onCancelClick={hideAddListForm}
+                    onSaveClick={addListHandler}
+                />
+            }
             
             {lists.map((listDetails)=><ListElement key={listDetails.id} listDetails={listDetails} selectedListId={selectedListId} setSelectedList={setSelectedList}/>)}
         </div>
