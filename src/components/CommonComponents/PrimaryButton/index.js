@@ -15,7 +15,7 @@ const PrimaryButton = ({ text, onClick, styleClasses , enabled }) => {
         className={classnames('primary-button',{
             'disabled-primary-button': !enabled,
             'enabled-primary-button': enabled,
-            styleClasses
+            [styleClasses]: styleClasses
         })}
         onClick={onClickHandler}
       >

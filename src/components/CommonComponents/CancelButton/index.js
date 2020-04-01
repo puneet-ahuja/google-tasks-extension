@@ -9,7 +9,7 @@ const CancelButton = ({ text, onClick, styleClasses }) => {
     return (
       <span 
         className={classnames('cancel-button',{
-            styleClasses
+            [styleClasses]: styleClasses
         })}
         onClick={onClick}
       >
