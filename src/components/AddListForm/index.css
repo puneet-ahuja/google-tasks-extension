@@ -1,0 +1,14 @@
+.add-list-buttons-container {
+    display: flex;
+    justify-content: space-around;
+    max-width: 400px;
+}
+
+.add-list-input {
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    line-height: 34px;
+    font-size: 14px;
+    width: 70%;
+    margin: 10px 0; 
+}

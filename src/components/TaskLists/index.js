@@ -4,6 +4,7 @@ import { getTasklist } from '../../GoogleAPI';
 import './index.css'
 import { tripleDotSVG, dragDropSVG } from '../../constants/svgs'
 import classnames from 'classnames'
+import AddListForm from '../AddListForm';
 
 const defaultList = [
     {
@@ -63,6 +64,7 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
             <div className='task-lists-header'>
                 <div className='button-style'>Create New List</div>
             </div>
+            <AddListForm/>
             {lists.map((listDetails)=><ListElement key={listDetails.id} listDetails={listDetails} selectedListId={selectedListId} setSelectedList={setSelectedList}/>)}
         </div>
     )
