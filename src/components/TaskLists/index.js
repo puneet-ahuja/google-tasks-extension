@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { getTasklist } from '../../GoogleAPI';
 import './index.css'
@@ -59,12 +59,19 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
         selectedListId && getTasklist({listId:selectedListId});
     },[selectedListId]);
 
+    const [ showAddListForm, setShowAddListForm ] = useState(false);
+
+    const toggleShowAddListForm = () => {
+        setShowAddListForm(!showAddListForm);
+    }
+
     return (
         <div className='tasklists-container'>
             <div className='task-lists-header'>
-                <div className='button-style'>Create New List</div>
+                <div className='button-style' onClick={toggleShowAddListForm}>Create New List</div>
             </div>
-            <AddListForm/>
+            {showAddListForm && <AddListForm/>}
+            
             {lists.map((listDetails)=><ListElement key={listDetails.id} listDetails={listDetails} selectedListId={selectedListId} setSelectedList={setSelectedList}/>)}
         </div>
     )
