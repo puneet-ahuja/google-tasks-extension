@@ -5,9 +5,16 @@ export const setTasklists = (lists)=>{
     } 
 }
 
-export const setSelectedList = (selectedList)=>{
+export const setSelectedList = selectedList => {
     return{
         type:'SET_SELECTED_LIST',
         selectedList
     } 
+}
+
+export const insertTasklist = taskList => {
+    return {
+        type: 'INSERT_TASK_LIST',
+        taskList
+    }
 }
