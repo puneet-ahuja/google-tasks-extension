@@ -1,5 +1,5 @@
 import { setTasklist } from '../actions/tasklist';
-import { setTasklists } from '../actions/tasklists';
+import { setTasklists, insertTasklist } from '../actions/tasklists';
 
 var CLIENT_ID =
         "388529190966-h6jt68745ge563i9nt4apmrpmk8pedbr.apps.googleusercontent.com";
@@ -16,7 +16,7 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/tasks/v1/res
 // What all permissions are required depends on this.
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
+var SCOPES = "https://www.googleapis.com/auth/tasks";
 
 
      /**
@@ -86,6 +86,21 @@ var SCOPES = "https://www.googleapis.com/auth/tasks.readonly";
           if (dispatchAction ){
             dispatchAction(setTasklist(taskList, listId));
           }
+        });
+      }
+
+    export const addTaskList = title => {
+        window.gapi.client.tasks.tasklists.insert({
+            title
+        }).then(function(response) {
+          var taskList = response.result;
+          if (dispatchAction && taskList ){
+            dispatchAction(insertTasklist(taskList));
+          }
+        }).catch(error => {
+          // TODO : Need to handle some Graceful Error Handling.
+          console.log('Error While Adding List');
+          console.log(error);
         });
       }
 

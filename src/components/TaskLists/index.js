@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { getTasklist } from '../../GoogleAPI';
+import { getTasklist, addTaskList } from '../../GoogleAPI';
 import './index.css'
 import { tripleDotSVG, dragDropSVG } from '../../constants/svgs'
 import classnames from 'classnames'
@@ -70,7 +70,7 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
     }
 
     const addListHandler = listName => {
-        console.log(listName);
+        addTaskList(listName);
     }
 
     return (
