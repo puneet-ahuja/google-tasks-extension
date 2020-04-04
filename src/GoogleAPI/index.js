@@ -1,5 +1,7 @@
 import { setTasklist } from '../actions/tasklist';
 import { setTasklists, insertTasklist } from '../actions/tasklists';
+import { setUserDetails } from '../actions/userDetails';
+import { parseUser } from './utils'
 
 var CLIENT_ID =
         "388529190966-h6jt68745ge563i9nt4apmrpmk8pedbr.apps.googleusercontent.com";
@@ -24,12 +26,17 @@ var SCOPES = "https://www.googleapis.com/auth/tasks";
   *  appropriately. After a sign-in, the API is called.
   */
  const updateSigninStatus = (isSignedIn) => {
-    // TODO : need to update Status from Here to Redux Store.
-   //setSighnedIn(isSignedIn);
     if (isSignedIn) {
+      const GoogleAuth = window.gapi.auth2.getAuthInstance();
+      const user = GoogleAuth.currentUser.get();
+      const parsedUser = parseUser(user);
       listTaskLists();
+
+      if(dispatchAction && parsedUser){
+        dispatchAction(setUserDetails({ ...parsedUser, isSignedIn}))
+      }
     } else {
-      
+      dispatchAction && dispatchAction(setUserDetails({isSignedIn}))
     }
   }
   
@@ -48,13 +55,16 @@ var SCOPES = "https://www.googleapis.com/auth/tasks";
             scope: SCOPES
           }
           ).then(function () {
-            // Listen for sign-in state changes.
-              window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+              const GoogleAuth = window.gapi.auth2.getAuthInstance();
+
+              // Listen for sign-in state changes.
+              GoogleAuth.isSignedIn.listen(updateSigninStatus);
   
               // Handle the initial sign-in state.
-              updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+              updateSigninStatus(GoogleAuth.isSignedIn.get());
           }, function(error) {
-            console.log('There is error Connecting to the Application')
+            console.log('There is error Connecting to the Application');
+            // TODO : Need to handle If There is eroor.
           });
         });
       };
@@ -105,30 +115,12 @@ var SCOPES = "https://www.googleapis.com/auth/tasks";
       }
 
           
-  
-    /**
-         *  Sign in the user upon button click.
-         */
         export const handleAuthClick = (event) => {
           if(window.gapi.auth2.getAuthInstance()){
-            const userDetails = window.gapi.auth2.getAuthInstance().signIn();
-            console.log(userDetails);
+            window.gapi.auth2.getAuthInstance().signIn();
           }
         }
 
-
-        // TODO : Need to check for the cleaner way toget user details.
-  
-        // function onSignIn(profile) {
-          
-        //   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        //   console.log('Name: ' + profile.getName());
-        //   console.log('Image URL: ' + profile.getImageUrl());
-        //   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        // }
-        /**
-         *  Sign out the user upon button click.
-         */
         export const handleSignoutClick = (event) => {
           window.gapi.auth2.getAuthInstance().signOut();
         }
