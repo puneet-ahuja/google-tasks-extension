@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { handleAuthClick, handleSignoutClick } from '../../GoogleAPI'
 
 
-const Header = ({isSighnedIn,dispatch}) => {
+const Header = ({isSignedIn,dispatch}) => {
   
     return (
       <div className='header-container'>
@@ -13,17 +13,14 @@ const Header = ({isSighnedIn,dispatch}) => {
             <div className='title-style'>Google Tasks</div>
 
         </div>
-        {isSighnedIn?<div className='button-style' onClick={handleSignoutClick}>Log Out</div>:<div className='button-style' onClick={(event)=> handleAuthClick(event,dispatch)}>Sign In</div>}
+        {isSignedIn?<div className='button-style' onClick={handleSignoutClick}>Log Out</div>:<div className='button-style' onClick={(event)=> handleAuthClick(event,dispatch)}>Sign In</div>}
       </div>
     );
   }
 
   Header.propTypes = {
-      isSighnedIn: PropTypes.bool
+      isSignedIn: PropTypes.bool.isRequired
   }
 
-  Header.defaultProps = {
-    isSighnedIn: false
-  };
 
   export default Header;

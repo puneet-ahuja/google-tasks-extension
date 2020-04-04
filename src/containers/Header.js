@@ -1,4 +1,10 @@
 import { connect } from 'react-redux';
 import Header from '../components/Header'
 
-export default connect()(Header)
+const mapStateToProps = state => {
+    return {
+        isSignedIn : state.userDetails.isSignedIn
+    }
+}
+
+export default connect(mapStateToProps)(Header)
