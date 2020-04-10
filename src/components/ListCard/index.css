@@ -9,6 +9,11 @@
     border-radius: 5px;
 }
 
+
+.list-element-dragging{
+    opacity: 0;
+}
+
 .drag-drop-icon {
     width: 50px;
 }

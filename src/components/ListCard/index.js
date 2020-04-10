@@ -10,8 +10,11 @@ import './index.css'
 const ListCard = ({listDetails, selected, setSelectedList, findCard, moveCard}) =>{
     const { title, id } = listDetails
     const originalIndex = findCard(id).index;
-    const [, drag, preview ] = useDrag({
+    const [{ isDragging }, drag, preview ] = useDrag({
       item: { type: ItemTypes.LIST_CARD, id, originalIndex },
+      collect: monitor => ({
+        isDragging: monitor.isDragging()
+      }),
       end: (dropResult, monitor) => {
         const { id: droppedId, originalIndex } = monitor.getItem();
         const didDrop = monitor.didDrop();
@@ -38,7 +41,7 @@ const ListCard = ({listDetails, selected, setSelectedList, findCard, moveCard}) 
     
 
     return (
-        <div className='list-element' ref={node => preview(drop(node))}>
+        <div className={classnames('list-element',{'list-element-dragging':isDragging})} ref={node => preview(drop(node))}>
             <div className='list-data'>
                 <div className={'drag-drop-icon'} ref={drag} >{dragDropSVG}</div>
                 <div 
