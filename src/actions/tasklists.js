@@ -18,3 +18,19 @@ export const insertTasklist = taskList => {
         taskList
     }
 }
+
+export const removeTaskList = id => {
+    return {
+        type: 'REMOVE_TASK_LIST',
+        id
+    }
+}
+
+
+export const updateListStatus = (id,status) => {
+    return {
+        type: 'UPDATE_TASK_LIST_STATUS',
+        id,
+        status
+    }
+}

@@ -6,13 +6,17 @@ import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import rootReducer from './reducers'
+import { DndProvider } from 'react-dnd'
+import Backend from 'react-dnd-html5-backend'
 
 const store = createStore(rootReducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
+    <DndProvider backend={Backend}>
             <Provider store={store} >
                 <App />
-            </Provider>,
+            </Provider>
+            </DndProvider>,
             document.getElementById('root')
         );
 

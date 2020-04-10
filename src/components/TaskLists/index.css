@@ -19,6 +19,12 @@
     font-size: 14px;
 }
 
+.empty-list-element {
+    height: 50px;
+    padding: 6px 0;
+    box-sizing: border-box;
+}
+
 .list-element {
     height: 50px;
     padding: 6px 0;
@@ -26,6 +32,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+/* TODO : Need to change this style.
+This is Just A Temperary Style */
+.list-element-dragging{
+    background-color: red;
 }
 
 .drag-drop-icon {

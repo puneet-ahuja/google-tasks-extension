@@ -5,6 +5,8 @@ import './index.css'
 import { tripleDotSVG, dragDropSVG } from '../../constants/svgs'
 import classnames from 'classnames'
 import AddListForm from '../AddListForm';
+import { useDrag } from 'react-dnd';
+import { ItemTypes, CardStatus } from '../../constants/dragAndDrop'
 
 const defaultList = [
     {
@@ -33,11 +35,26 @@ const defaultList = [
     }
 ]
 
-const ListElement = ({listDetails, selectedListId, setSelectedList}) =>{
+const EmptyListComponent = () => {
+    return <div className='empty-list-element'>
+        </div>
+}
+
+const ListElement = ({listDetails, selectedListId, setSelectedList, updateListStatus}) =>{
     const { title, id } = listDetails
     const selected = id === selectedListId;
+    const [{ isDragging }, drag] = useDrag({
+        item: { type: ItemTypes.LIST_CARD },
+        collect: monitor => ({
+          isDragging: !!monitor.isDragging(),
+        }),
+      })
+
+    if (isDragging){
+        updateListStatus(id , CardStatus.IS_DRAGGING);
+    }
     return (
-        <div className={'list-element'}>
+        <div className={classnames('list-element',{'list-element-dragging':isDragging})} ref={drag}>
             <div className='list-data'>
                 <div className={'drag-drop-icon'}>{dragDropSVG}</div>
                 <div 
@@ -53,7 +70,9 @@ const ListElement = ({listDetails, selectedListId, setSelectedList}) =>{
 }
 
 
-const TaskLists = ({lists,selectedListId, setSelectedList}) => {
+
+
+const TaskLists = ({lists,selectedListId, setSelectedList, updateListStatus}) => {
 
     useEffect(() => {
         selectedListId && getTasklist({listId:selectedListId});
@@ -73,6 +92,19 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
         addTaskList(listName);
     }
 
+    const renderListElement = () => {
+        
+        return lists.map(({status,...listDetails})=> {
+            switch(status){
+                case CardStatus.IS_DRAGGING:
+                    return <EmptyListComponent/>;
+                default :
+                    return<ListElement key={listDetails.id} listDetails={listDetails} selectedListId={selectedListId} setSelectedList={setSelectedList} updateListStatus={updateListStatus} />;
+            }
+        }
+        )
+    }
+
     return (
         <div className='tasklists-container'>
             <div className='task-lists-header'>
@@ -84,8 +116,7 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
                     onSaveClick={addListHandler}
                 />
             }
-            
-            {lists.map((listDetails)=><ListElement key={listDetails.id} listDetails={listDetails} selectedListId={selectedListId} setSelectedList={setSelectedList}/>)}
+            {renderListElement()}
         </div>
     )
 }
@@ -93,11 +124,12 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
 TaskLists.propTypes = {
     lists: PropTypes.array,
     selectedListId: PropTypes.string,
-    setSelectedList: PropTypes.func.isRequired
+    setSelectedList: PropTypes.func.isRequired,
+    updateListStatus: PropTypes.func.isRequired
 }
 
 TaskLists.defaultProps = {
-    lists: defaultList
+    lists: defaultList,
 }
 
 

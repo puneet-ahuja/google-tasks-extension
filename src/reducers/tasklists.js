@@ -22,6 +22,16 @@ export default (state = initialState, action) => {
           ...state,
           lists: [action.taskList, ...state.lists]
         }
+
+      case 'UPDATE_TASK_LIST_STATUS':
+        const {id: selectedId, status} = action
+        return {
+          ...state,
+          lists : state.lists.map(item=>{
+            const { id } = item
+            return id === selectedId? {...item,status}: item; 
+          })
+        }
         
       default:
         return state
