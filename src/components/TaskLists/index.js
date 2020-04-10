@@ -113,7 +113,7 @@ TaskLists.propTypes = {
 }
 
 TaskLists.defaultProps = {
-    lists: defaultList,
+    lists: defaultList
 }
 
 
