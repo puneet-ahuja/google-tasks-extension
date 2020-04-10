@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { getTasklist, addTaskList } from '../../GoogleAPI';
 import './index.css'
-import { tripleDotSVG, dragDropSVG } from '../../constants/svgs'
-import classnames from 'classnames'
 import AddListForm from '../AddListForm';
+import { useDrop } from 'react-dnd';
+import ListCard from '../ListCard'
+import { ItemTypes } from '../../constants/dragAndDrop'
+import update from "immutability-helper";
 
 const defaultList = [
     {
@@ -33,33 +35,21 @@ const defaultList = [
     }
 ]
 
-const ListElement = ({listDetails, selectedListId, setSelectedList}) =>{
-    const { title, id } = listDetails
-    const selected = id === selectedListId;
-    return (
-        <div className={'list-element'}>
-            <div className='list-data'>
-                <div className={'drag-drop-icon'}>{dragDropSVG}</div>
-                <div 
-                    className={classnames('tasklists-title',{"selected-title":selected})}
-                    onClick={()=>setSelectedList(listDetails)}
-                >{title}</div>
-            </div>
-            <div className='triple-dot-style'>
-                {tripleDotSVG}
-            </div>
-        </div>
-    )
-}
+const TaskLists = ({lists,selectedListId, setSelectedList, setTasklists}) => {
 
+    const [ cards, setCards ] = useState([]);
 
-const TaskLists = ({lists,selectedListId, setSelectedList}) => {
-
+    useEffect(()=>setCards(lists),[lists]);
     useEffect(() => {
         selectedListId && getTasklist({listId:selectedListId});
     },[selectedListId]);
 
     const [ showAddListForm, setShowAddListForm ] = useState(false);
+
+    const [, drop] = useDrop({ 
+        accept: ItemTypes.LIST_CARD,
+        drop: () => setTasklists(cards)
+     });
 
     const toggleShowAddListForm = () => {
         setShowAddListForm(!showAddListForm);
@@ -73,8 +63,34 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
         addTaskList(listName);
     }
 
+    const moveCard = (id, atIndex) => {
+        const { card, index } = findCard(id);
+        setCards(
+          update(cards, {
+            $splice: [[index, 1], [atIndex, 0, card]]
+          })
+        );
+      };
+    
+    
+      /***
+       * Function to find a card
+       */
+      const findCard = id => {
+        const card = cards.filter(c => `${c.id}` === id)[0];
+        return {
+          card,
+          index: cards.indexOf(card)
+        };
+      };
+
+    const renderListElement = () => {
+        
+        return cards.map(({status,...listDetails})=> <ListCard key={listDetails.id} listDetails={listDetails} selected={selectedListId === listDetails.id} setSelectedList={setSelectedList} moveCard={moveCard} findCard={findCard} />)
+    }
+
     return (
-        <div className='tasklists-container'>
+        <div className='tasklists-container' ref={drop}>
             <div className='task-lists-header'>
                 <div className='button-style' onClick={toggleShowAddListForm}>Create New List</div>
             </div>
@@ -84,8 +100,7 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
                     onSaveClick={addListHandler}
                 />
             }
-            
-            {lists.map((listDetails)=><ListElement key={listDetails.id} listDetails={listDetails} selectedListId={selectedListId} setSelectedList={setSelectedList}/>)}
+            {renderListElement()}
         </div>
     )
 }
@@ -93,7 +108,8 @@ const TaskLists = ({lists,selectedListId, setSelectedList}) => {
 TaskLists.propTypes = {
     lists: PropTypes.array,
     selectedListId: PropTypes.string,
-    setSelectedList: PropTypes.func.isRequired
+    setSelectedList: PropTypes.func.isRequired,
+    setTasklists: PropTypes.func.isRequired
 }
 
 TaskLists.defaultProps = {

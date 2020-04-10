@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import TaskLists from '../components/TaskLists'
-import { setSelectedList } from '../actions/tasklists'
+import { setSelectedList, setTasklists } from '../actions/tasklists'
 
 const mapStateToProps = (state)=>{
     return {
@@ -11,7 +11,8 @@ const mapStateToProps = (state)=>{
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setSelectedList : (selectedList) => dispatch(setSelectedList(selectedList))
+        setSelectedList : (selectedList) => dispatch(setSelectedList(selectedList)),
+        setTasklists : lists => dispatch(setTasklists(lists)),
     }
 }
 
