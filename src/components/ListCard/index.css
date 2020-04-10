@@ -6,8 +6,8 @@
     justify-content: space-between;
     align-items: center;
 }
-/* TODO : Need to change this style.
-This is Just A Temperary Style */
+
+
 .list-element-dragging{
     opacity: 0;
 }
