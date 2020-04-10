@@ -1,3 +1,9 @@
+.empty-list-element {
+    height: 50px;
+    padding: 6px 0;
+    box-sizing: border-box;
+}
+
 .list-element {
     height: 50px;
     padding: 6px 0;
@@ -5,8 +11,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
-    border-radius: 5px;
+}
+/* TODO : Need to change this style.
+This is Just A Temperary Style */
+.list-element-dragging{
+    opacity: 0;
 }
 
 .drag-drop-icon {
