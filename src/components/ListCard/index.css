@@ -1,0 +1,36 @@
+.empty-list-element {
+    height: 50px;
+    padding: 6px 0;
+    box-sizing: border-box;
+}
+
+.list-element {
+    height: 50px;
+    padding: 6px 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* TODO : Need to change this style.
+This is Just A Temperary Style */
+.list-element-dragging{
+    opacity: 0;
+}
+
+.drag-drop-icon {
+    width: 50px;
+}
+
+.list-data{
+    display: flex;
+    align-items: center;
+}
+
+.triple-dot-style {
+    width: 20px;
+}
+
+.selected-title {
+    color: cadetblue;
+}

@@ -6,8 +6,10 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
       case 'SET_TASKLISTS':
+        const selectedList = state.selectedList.id ? state.selectedList: action.lists[0];
         return {
-          selectedList: action.lists[0],
+          ...state,
+          selectedList,
           lists: action.lists
         }
 
