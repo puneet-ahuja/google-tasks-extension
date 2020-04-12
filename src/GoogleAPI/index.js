@@ -1,7 +1,7 @@
 import { setTasklist } from '../actions/tasklist';
 import { setTasklists, insertTasklist } from '../actions/tasklists';
 import { setUserDetails } from '../actions/userDetails';
-import { parseUser } from './utils'
+import { parseUser, parseTaskList } from './utils'
 
 var CLIENT_ID =
         "388529190966-h6jt68745ge563i9nt4apmrpmk8pedbr.apps.googleusercontent.com";
@@ -89,12 +89,13 @@ var SCOPES = "https://www.googleapis.com/auth/tasks";
 
     export const  getTasklist = ({listId}) => {
         window.gapi.client.tasks.tasks.list({
-            'maxResults': 10,
+            'maxResults': 100,
             tasklist: listId
         }).then(function(response) {
           var taskList = response.result.items;
+          const parsedTaskList = parseTaskList(taskList);
           if (dispatchAction ){
-            dispatchAction(setTasklist(taskList, listId));
+            dispatchAction(setTasklist(parsedTaskList, listId));
           }
         });
       }
