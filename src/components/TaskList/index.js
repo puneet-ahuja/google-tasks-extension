@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import './index.css'
 import { tripleDotSVG } from '../../constants/svgs'
 import TaskCard from '../TaskCard'
+import DropDown from '../DropDown'
 
 const TaskList = ({listTitle,list, selectedTaskId, setSelectedTask}) => {
 
     const [ cards, setCards ] = useState([]);
     useEffect( ()=>setCards(list), [list] )
+    const [ showDropdown, setShowDropdown ] = useState(false);
 
 
     // TODO : Need to define this function.
@@ -26,12 +28,14 @@ const TaskList = ({listTitle,list, selectedTaskId, setSelectedTask}) => {
     const moveTask = (id, parentId, parentSibling) => {
         return 'moved'
     }
+    
 
     return (
         <div className='tasklist-container'>
             <div className='task-list-header'>
                 <div>{listTitle}</div>
-                <div className='triple-dot-style'>{tripleDotSVG}</div>
+                <div className='triple-dot-style' onClick={()=>setShowDropdown(true)}>{tripleDotSVG}</div>
+                {showDropdown && <DropDown onCloseDropdown={()=>setShowDropdown(false)} />}
             </div>
             {cards.map(task=><TaskCard 
                                 key={task.id}

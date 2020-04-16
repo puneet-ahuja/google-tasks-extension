@@ -1,0 +1,10 @@
+.drop-down-button {
+    width: 100px;
+    background-color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+.drop-down-button:hover {
+    background-color: gray;
+}
