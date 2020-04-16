@@ -11,4 +11,5 @@
     display: flex;
     justify-content: space-between;
     text-align: center;
+    position: relative;
 }
