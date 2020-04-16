@@ -1,0 +1,18 @@
+.drop-down-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: transparent;
+    z-index: 100;
+}
+
+.drop-down-container {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    z-index: 200;
+    border-radius: 4px;
+    box-shadow: 0 0 2px 2px gray;
+}
