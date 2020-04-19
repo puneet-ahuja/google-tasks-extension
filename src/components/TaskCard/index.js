@@ -4,47 +4,60 @@ import './index.css'
 import { dragDropSVG } from '../../constants/svgs'
 import classnames from 'classnames'
 import { useDrag, useDrop } from 'react-dnd'
-import { ItemTypes } from '../../constants/dragAndDrop';
+import { ItemTypes, DropZones } from '../../constants/dragAndDrop';
 
 
 /***
  * Task Card Component to handle Drag and Drop
  */
-const TaskCard = ({ task, selected, setSelectedTask, hasChild, styleClass, findTask, moveTask }) => {
+const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, restoreList }) => {
     const { title, notes, id } = task
 
     const [{isDragging},drag,preview] = useDrag({
         item:{
-            draggedId: id,
+            id,
             type: ItemTypes.TASK_CARD
         },
         collect: monitor => ({
             isDragging: monitor.isDragging()
         }),
         end: (dropResult, monitor) => {
+            // TODO : Need to handle This Working.
             // const { id: droppedId, originalIndex } = monitor.getItem();
             const didDrop = monitor.didDrop();
             if (!didDrop) {
-                /**
-                 * Mave Card to to original Position.
-                 */
-            // TODO : Need to call this function. write way.
-            // moveCard(droppedId, originalIndex);
+                restoreList()
             }
         }
     })
-    const [ , drop ]= useDrop({
+    const [ , dropZone1 ]= useDrop({
         accept: ItemTypes.TASK_CARD,
-        drop: () => false
+        canDrop: () => false,
+        hover({ id: draggedId }) {
+            if (draggedId !== id) {
+              moveTask(draggedId, id, DropZones.ZONE_1);
+            }
+          }
+    })
+    const [ , dropZone2 ]= useDrop({
+        accept: ItemTypes.TASK_CARD,
+        canDrop: () => false,
+        hover({ id: draggedId }) {
+            if (draggedId !== id) {
+              moveTask(draggedId, id, DropZones.ZONE_2);
+            }
+          }
     })
     return (
-        <div className={classnames('task-card-container', styleClass, {
+        <div className={classnames('task-card-container', {
             'task-card-dragging': isDragging
-        })} ref={node => preview(drop(node))}>
+        })} ref={preview}>
             <div className='card-data'>
-                <div className={'drag-drop-icon'} ref={drag}>{dragDropSVG}</div>
-                <div className='circle'></div>
-                <div className='task-details'>
+                <div className={classnames('drop-zone-1', styleClass)} ref={dropZone1} >
+                    <div className={'drag-drop-icon'} ref={drag}>{dragDropSVG}</div>
+                    <div className='circle'></div>
+                </div>
+                <div className='task-details' ref={dropZone2} >
                     <div 
                         className={classnames('task-card-title',
                                         {
@@ -60,24 +73,23 @@ const TaskCard = ({ task, selected, setSelectedTask, hasChild, styleClass, findT
                 </div>
             </div>
             {task.subTasks && task.subTasks.map((subtask)=><TaskCard 
-                key={subtask.id} task={{ ...subtask }} styleClass='child-task-card'/>)}
+                key={subtask.id} 
+                task={{ ...subtask }} 
+                styleClass='child-task-card' 
+                moveTask={moveTask}
+                restoreList={restoreList}
+            />)}
         </div>
     )
 }
 
-// TODO : Need to redefine Proptypes
+// TODO : Need to identify Selected and Set Selected Behaviour
 TaskCard.propTypes = {
     id: PropTypes.string.isRequired,
     setSelectedTask: PropTypes.func.isRequired,
     selected: PropTypes.bool,
-    findTask: PropTypes.func.isRequired,
-    moveTask: PropTypes.func.isRequired
+    moveTask: PropTypes.func.isRequired,
+    restoreList: PropTypes.func.isRequired
 }
-
-// TODO : Need to remove Dummy Default Props
-TaskCard.defaultProps = {
-    id: '1',
-}
-
 
 export default TaskCard;

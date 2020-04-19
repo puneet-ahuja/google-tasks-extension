@@ -4,11 +4,16 @@
 }
 
 .child-task-card{
-    margin-left: 40px;
+    padding-left: 40px;
 }
 
 .task-card-dragging{
     opacity: 0;
+}
+
+.drop-zone-1{
+    display: flex;
+    align-items: center;
 }
 
 .card-data {
