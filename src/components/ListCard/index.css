@@ -16,6 +16,7 @@
 
 .drag-drop-icon {
     width: 50px;
+    flex-shrink: 0;
 }
 
 .list-data{
