@@ -20,14 +20,14 @@ export const parseUser = user => {
 export const parseTaskList = taskList => {
     const parsedListObject = taskList.reduce( (acc, {parent, ...task}) => {
         if(parent && acc[parent]){
-            let subTasks = []
+            let subTasks = [ task ]
             if(acc[parent].subTasks){
                 subTasks = [ ...acc[parent].subTasks, task ]
             }
             acc[parent] = { ...acc[parent], subTasks }
         }
         else if(parent){
-            acc[parent] = {subTasks: [task]}
+            acc[parent] = {subTasks: [ task ]}
         }
         else {
             const { id } = task;
@@ -42,10 +42,9 @@ export const parseTaskList = taskList => {
     const parsedListObjectwithSortedSubTasks = Object.values(parsedListObject).map(task => {
         let sortedSubTasks = undefined;
         if(task.subTasks){
-            sortedSubTasks = task.subTasks.sort( ({position:positionA},{position:positionB}) => positionA > positionB)
+            sortedSubTasks = task.subTasks.sort( ({position:positionA},{position:positionB}) => positionA - positionB)
         }
         return {...task,subTasks: sortedSubTasks}
     })
-
-    return Object.values(parsedListObjectwithSortedSubTasks).sort( ({position:positionA},{position:positionB}) => positionA > positionB)
+    return Object.values(parsedListObjectwithSortedSubTasks).sort( ({position:positionA},{position:positionB}) => positionA - positionB)
 }

@@ -11,6 +11,10 @@ import { findCardDetails,
     insertTask, 
     canMove 
 } from './utils';
+import { reorderTask } from '../../GoogleAPI'
+
+let parent = null;
+let previous = null;
 
 const TaskList = ({ 
     listTitle,
@@ -24,9 +28,17 @@ const TaskList = ({
     useEffect( ()=>setCards(list), [list] )
     const [ showDropdown, setShowDropdown ] = useState(false);
 
+    const onDropHandler = (item) => {
+        const { id: draggedId } = item
+        setTasklist(cards, listId);
+        reorderTask(draggedId, listId, parent, previous);
+        parent = null;
+        previous = null;
+    }
+
     const [, drop] = useDrop({ 
         accept: ItemTypes.TASK_CARD,
-        drop: () => setTasklist(cards, listId)
+        drop: onDropHandler
      });
 
 
@@ -38,7 +50,9 @@ const TaskList = ({
         const sourceDetails = findTask(sourceId);
         const targetDetails = findTask(targetId)
 
-        const { status, parentId, parentSibling } = canMove(sourceDetails,targetDetails,zone)
+        const { status, parentId, parentSibling } = canMove(sourceDetails,targetDetails,zone);
+        parent = parentId;
+        previous = parentSibling;
        
         if(status){
             const tasks = [ ...cards ];
