@@ -43,7 +43,7 @@ const TaskList = ({
 
 
     const findTask = id => {
-        return findCardDetails(cards, id)
+        return findCardDetails(list, id)
     } 
 
     const moveTask = (sourceId, targetId, zone) => {
@@ -51,11 +51,11 @@ const TaskList = ({
         const targetDetails = findTask(targetId)
 
         const { status, parentId, parentSibling } = canMove(sourceDetails,targetDetails,zone);
-        parent = parentId;
-        previous = parentSibling;
        
         if(status){
-            const tasks = [ ...cards ];
+            parent = parentId;
+            previous = parentSibling;
+            const tasks = [ ...list ];
             const { removedTask, tasks:tasksAfterRemoval } = removeTask(tasks,sourceDetails.card.id);
             const cardsAfterInsertion = insertTask(tasksAfterRemoval, removedTask, parentId, parentSibling)
             setCards(cardsAfterInsertion);
@@ -64,8 +64,9 @@ const TaskList = ({
 
     const restoreList = () => {
         setTasklist([...list],listId)
+        parent = null;
+        previous = null;
     }
-    
 
     return (
         <div className='tasklist-container' ref={ drop }>
