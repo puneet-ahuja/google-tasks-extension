@@ -1,6 +1,7 @@
 .task-card-container {
     background-color: white;
     border-radius: 4px;
+    overflow: hidden;
 }
 
 .child-task-card{
@@ -45,6 +46,11 @@
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;  
     overflow: hidden;
+    outline: none;
+    resize: none;
+    border: 0;
+    width: 100%;
+    font-size: 22px;
 }
 
 .task-card-notes {

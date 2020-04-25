@@ -79,28 +79,27 @@ export const removeTask = ( tasks, idToRemove ) => {
  * 
  * @returns { new Cards State.}
  */
-export const insertTask = (cards , cardToInsert, parentId, parentSibling) => {
-    const newCards = [ ...cards ];
+export const insertTask = (cards , cardToInsert, parentId, previous) => {
+    let newCards = [ ...cards ];
     let selectedList = [];
 
     if(parentId){
         const parent = newCards.find( ({ id }) => id===parentId )
-        if(parent.subTasks){
-            selectedList = parent.subTasks
+        if(previous && parent.subTasks) {
+            parent.subTasks.splice(selectedList.findIndex(({id})=> id === previous)+1,0,cardToInsert)
+        }
+        else if(!previous && parent.subTasks){
+            parent.subTasks = [ cardToInsert, ...parent.subTasks ]
         }
         else{
-            parent.subTasks = selectedList
+            parent.subTasks = [ cardToInsert ]
         }
     }
+    else if(previous) {
+        newCards.splice(newCards.findIndex(({id})=> id === previous)+1, 0, cardToInsert);
+    }
     else {
-        selectedList = newCards
-    }
-
-    if(parentSibling){
-        selectedList.splice(selectedList.findIndex(({id})=> id === parentSibling)+1,0,cardToInsert)
-    }
-    else{
-        selectedList = [cardToInsert, ...selectedList];
+        newCards = [cardToInsert, ...newCards]
     }
     return newCards;
 }

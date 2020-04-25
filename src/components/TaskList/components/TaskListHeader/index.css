@@ -1,0 +1,10 @@
+.task-list-header{
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    position: relative;
+}
+
+.task-list-header-btn-cont {
+    display: flex;
+}

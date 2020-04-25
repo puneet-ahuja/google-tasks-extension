@@ -6,10 +6,3 @@
     min-height: 100vh;
     padding: 20px;
 }
-
-.task-list-header{
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    position: relative;
-}
