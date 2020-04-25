@@ -10,7 +10,14 @@ import { ItemTypes, DropZones } from '../../constants/dragAndDrop';
 /***
  * Task Card Component to handle Drag and Drop
  */
-const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, restoreList }) => {
+const TaskCard = ({ 
+    task,
+    selected,
+    setSelectedTask,
+    styleClass,
+    moveTask,
+    restoreList 
+}) => {
     const { title, notes, id } = task
 
     const [{isDragging},drag,preview] = useDrag({
@@ -22,8 +29,6 @@ const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, resto
             isDragging: monitor.isDragging()
         }),
         end: (dropResult, monitor) => {
-            // TODO : Need to handle This Working.
-            // const { id: droppedId, originalIndex } = monitor.getItem();
             const didDrop = monitor.didDrop();
             if (!didDrop) {
                 restoreList()
