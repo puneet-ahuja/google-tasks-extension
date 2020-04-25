@@ -124,19 +124,37 @@ export const addTaskList = title => {
  * @param {Id of the new previous} previous 
  */
 export const reorderTask = (taskId, listId, parent, previous) => {
-  window.gapi.client.tasks.tasks.move({
-    task: taskId,
-    tasklist: listId,
-    parent,
-    previous
-}).then(
-  (res) => {
-    console.log('Reorder Successfull.',res)
-  }
-).catch(
-  err=> console.log('There is error while reordering', err)
-)
+    window.gapi.client.tasks.tasks.move({
+      task: taskId,
+      tasklist: listId,
+      parent,
+      previous
+    }).then(
+      (res) => {
+        return res
+      }
+    ).catch(
+      err=> console.log('There is error while reordering', err)
+    )
 
+}
+
+/**
+ * Function to Insert Task to the Given List.
+ * 
+ * @param {list Id of the List in which we want to insert Task} listId 
+ * @param {Title of the task to be Added} title 
+ */
+export const insertTaskAPI = (listId, title) => {
+  return window.gapi.client.tasks.tasks.insert({
+    tasklist: listId,
+    title
+  }).then(
+    res => res
+  )
+  .catch(
+    err=> console.log('There is error while Inserting', err)
+  )
 }
 
           

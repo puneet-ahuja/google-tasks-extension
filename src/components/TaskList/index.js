@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './index.css';
-import { tripleDotSVG } from '../../constants/svgs';
 import TaskCard from '../TaskCard';
-import DropDown from '../DropDown';
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from '../../constants/dragAndDrop';
 import { findCardDetails, 
@@ -11,7 +9,9 @@ import { findCardDetails,
     insertTask, 
     canMove 
 } from './utils';
-import { reorderTask } from '../../GoogleAPI'
+import { reorderTask } from '../../GoogleAPI';
+import TaskListHeader from './components/TaskListHeader';
+import { insertTaskAPI } from '../../GoogleAPI'
 
 let parent = null;
 let previous = null;
@@ -25,9 +25,8 @@ const TaskList = ({
     setTasklist
 }) => {
     const [ cards, setCards ] = useState([]);
+    const [ showNewTaskCard, setShowNewTaskCard ] = useState(false);
     useEffect( ()=>setCards(list), [list] )
-    const [ showDropdown, setShowDropdown ] = useState(false);
-
     const onDropHandler = (item) => {
         const { id: draggedId } = item
         setTasklist(cards, listId);
@@ -65,15 +64,50 @@ const TaskList = ({
     const restoreList = () => {
         setTasklist([...list],listId)
     }
-    
 
+    const insertNewTask = title => {
+        /**
+         * Sending Request to API
+         */
+        insertTaskAPI(listId, title).then( ({status,result: cardToInsert = {}}) => {
+            if(status === 200){
+                const cardsAfterInsertion = insertTask(list, cardToInsert);
+                /**
+                 * Update Store with the new Task.
+                 */
+                setTasklist(cardsAfterInsertion, listId);
+                /**
+                 * Hide New Task Card.
+                 */
+                setShowNewTaskCard(false);
+            }
+        })
+    }
+
+    const onAddClick = () => {
+        /**
+         * Show Add Task Card.
+         */
+        setShowNewTaskCard(true);
+    }
+    // TODO : P5 : Can create new Component for New Task Card.
     return (
         <div className='tasklist-container' ref={ drop }>
-            <div className='task-list-header'>
-                <div>{listTitle}</div>
-                <div className='triple-dot-style' onClick={()=>setShowDropdown(true)}>{tripleDotSVG}</div>
-                {showDropdown && <DropDown onCloseDropdown={()=>setShowDropdown(false)} />}
-            </div>
+            <TaskListHeader 
+                listTitle={listTitle}
+                onAddClick={onAddClick}
+                />
+            {showNewTaskCard &&
+                <TaskCard
+                    editable
+                    task={{
+                        title:'',
+                        notes:'',
+                        id:'new-card'
+                    }}
+                    insertTask={insertNewTask}
+                />
+            }
             {cards.map(task=><TaskCard 
                                 key={task.id}
                                 task={task}

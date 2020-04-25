@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './index.css'
 import { dragDropSVG } from '../../constants/svgs'
@@ -10,8 +10,14 @@ import { ItemTypes, DropZones } from '../../constants/dragAndDrop';
 /***
  * Task Card Component to handle Drag and Drop
  */
-const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, restoreList }) => {
-    const { title, notes, id } = task
+const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, restoreList, editable, insertTask}) => {
+    const { title, notes, id } = task;
+    // TODO : P5 : Need more grooming on this.
+    /**
+     * To make this editable.
+     */
+    const [ canEdit ] = useState(editable);
+    const [ titleValue, setTitleValue ] = useState(title);
 
     const [{isDragging},drag,preview] = useDrag({
         item:{
@@ -48,6 +54,84 @@ const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, resto
             }
           }
     })
+    /**
+     * To update the height of the Card based on content for text area.
+     */
+    const [ height, setHeight ] = useState('26px');
+    const getTitleHeight = (scrollHeight, lineHeight) => {
+        const MAX_LINES = 5;
+        const lines = (scrollHeight-4)/26;
+
+        return (Math.min(lines, MAX_LINES) * lineHeight) + 'px';
+    }
+
+    const titleStyle = {
+        height
+    }
+
+    /**
+     * Funtion to set title Value and Manage Height of the TextArea
+     * @param {Default Event object from browser} event 
+     */
+    const onChangeTextAreaHandler = event => {
+        setTitleValue(event.target.value);
+        if(event.target.scrollHeight){
+            const newHeight = getTitleHeight(event.target.scrollHeight, 26);
+            if(newHeight !== height){
+                setHeight(newHeight)
+            }
+            
+        }
+    }
+
+    /**
+     * Function to store New Card.
+     */
+    const onBlurTextAreaHandler = () => {
+        // TODO : Fetch this from constant file.
+        if (id === 'new-card'){
+            /**
+             * Funtion to Update Task to store and Google API.
+             */
+            insertTask(titleValue)
+        }
+        
+    }
+
+    // TODO : P5 : Can Move Text Area to some other place.
+    /**
+     * Function to conditionally render Title in Text Area of Div
+     */
+    const renderTitle = () => {
+        if ( canEdit ){
+            return (
+                <textarea
+                        rows={1}
+                        className='task-card-title'
+                        style={titleStyle}
+                        onChange={onChangeTextAreaHandler}
+                        onBlur={onBlurTextAreaHandler}
+                        value={titleValue}
+                        placeholder={'Enter Task Here'}
+                        autoFocus
+                    />        
+            )
+        }
+        else {
+            return (
+                <div 
+                        className={classnames('task-card-title',
+                                        {
+                                            'task-card-selected':selected
+                                        })} 
+                        onClick={()=>{setSelectedTask({selectedTask: task})}}>
+                        {title}
+                    </div>
+            )
+        }
+    }
+    
+
     return (
         <div className={classnames('task-card-container', {
             'task-card-dragging': isDragging
@@ -58,14 +142,8 @@ const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, resto
                     <div className='circle'></div>
                 </div>
                 <div className='task-details' ref={dropZone2} >
-                    <div 
-                        className={classnames('task-card-title',
-                                        {
-                                            'task-card-selected':selected
-                                        })} 
-                        onClick={()=>{setSelectedTask({selectedTask: task})}}>
-                        {title}
-                    </div>
+                    {renderTitle()}
+                    
                     {notes && 
                     <div className='task-card-notes'>
                         {notes}
@@ -83,13 +161,17 @@ const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, resto
     )
 }
 
-// TODO : Need to identify Selected and Set Selected Behaviour
 TaskCard.propTypes = {
     id: PropTypes.string.isRequired,
-    setSelectedTask: PropTypes.func.isRequired,
+    setSelectedTask: PropTypes.func,
     selected: PropTypes.bool,
     moveTask: PropTypes.func.isRequired,
-    restoreList: PropTypes.func.isRequired
+    restoreList: PropTypes.func.isRequired,
+    insertTask: PropTypes.func
 }
 
+TaskCard.defaultProps = {
+    setSelectedTask: () => {},
+    insertTask: () => {}
+}
 export default TaskCard;
