@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './index.css'
 import { calendarIcon } from '../../constants/svgs';
-import TaskDetailPlaceHolder from './components/TaskDetailPlaceHolder'
+import TaskDetailPlaceHolder from './components/TaskDetailPlaceHolder';
+import TextArea from '../../components/CommonComponents/TextArea';
+import DateTimePicker from 'react-datetime-picker';
 
 const TaskDetail = ({id,title,notes}) => {
+
+    const [ showDateTimePicker, setShowDateTimePicker ]= useState(false);
 
     if(!id){
         return <TaskDetailPlaceHolder />
@@ -12,9 +16,23 @@ const TaskDetail = ({id,title,notes}) => {
     return (
         <div className={'task-detail-container'}>
             <div className='task-detail-header'>
-                <div>{title}</div>
-                <div className={'calendar-icon'}>{calendarIcon}</div>
+                <TextArea
+                    value={title}
+                    onBlur={()=>console.log('On Blur Called Here')}
+                />
+                <div
+                    className={'calendar-icon'}
+                    onClick={()=>setShowDateTimePicker(!showDateTimePicker)}
+                >
+                    {calendarIcon}
+                </div>
             </div>
+            {showDateTimePicker && 
+                <DateTimePicker
+                    onChange={()=>console.log('Date Time changed')}
+                    className={'date-time-style'}
+                />
+            }
             <div className='task-detail-notes'>
                 {notes}
             </div>
