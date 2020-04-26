@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './index.css'
-import { calendarIcon } from '../../constants/svgs'
+import { calendarIcon } from '../../constants/svgs';
+import TaskDetailPlaceHolder from './components/TaskDetailPlaceHolder'
 
 const TaskDetail = ({id,title,notes}) => {
+
+    if(!id){
+        return <TaskDetailPlaceHolder />
+    }
     return (
         <div className={'task-detail-container'}>
             <div className='task-detail-header'>
@@ -18,16 +23,9 @@ const TaskDetail = ({id,title,notes}) => {
 }
 
 TaskDetail.propTypes = {
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired
+    id: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string
 }
-// TODO : Need to remove default Values of These.
-TaskDetail.defaultProps = {
-    id: '1',
-    title: 'This is Dummy Title',
-    notes: 'This is some dummy Notes'
-}
-
 
 export default TaskDetail;

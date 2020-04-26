@@ -1,0 +1,8 @@
+.task-detail-place-holder {
+    height: 100vh;
+    min-width: 300px;
+    width: 30%;
+    background-image: url('https://api.syncpenguin.com/images/google-tasks.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
