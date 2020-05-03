@@ -115,6 +115,7 @@ const TaskList = ({
                                 setSelectedTask={setSelectedTask}
                                 moveTask={moveTask}
                                 restoreList={restoreList}
+                                selectedTaskId={selectedTaskId}
                             />
                     )
             }
