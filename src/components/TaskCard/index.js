@@ -5,6 +5,8 @@ import { dragDropSVG } from '../../constants/svgs'
 import classnames from 'classnames'
 import { useDrag, useDrop } from 'react-dnd'
 import { ItemTypes, DropZones } from '../../constants/dragAndDrop';
+import Tag from '../../components/CommonComponents/Tag';
+import { parseISOString, formatDate } from '../../utils/date';
 
 
 /***
@@ -21,7 +23,8 @@ const TaskCard = ({
     insertTask,
     selectedTaskId
 }) => {
-    const { title, notes, id } = task;
+    const { title, notes, id, due } = task;
+    let formattedDueDate = '';
     // TODO : P5 : Need more grooming on this.
     /**
      * To make this editable.
@@ -140,8 +143,11 @@ const TaskCard = ({
             )
         }
     }
-    
 
+    if(due){
+        formattedDueDate = formatDate(parseISOString(due));
+    }
+    
     return (
         <div className={classnames('task-card-container', {
             'task-card-dragging': isDragging
@@ -158,6 +164,10 @@ const TaskCard = ({
                     <div className='task-card-notes'>
                         {notes}
                     </div>}
+                    {formattedDueDate && <Tag
+                        title={formattedDueDate}
+                        showCalendarIcon
+                    />}
                 </div>
             </div>
             {task.subTasks && task.subTasks.map((subtask)=><TaskCard 

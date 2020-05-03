@@ -28,14 +28,12 @@
     border-top: 1px solid #dadce0;
 }
 
-.react-datetime-picker__wrapper {
+.date-time-style {
+    margin: 10px 20px;
     padding: 5px 10px;
     text-align: left;
     border-radius: 4px;
-}
-
-.date-time-style {
-    margin: 10px 20px;
+    border: 1px solid #dadce0;
 }
 
 .task-detail-description-header {
