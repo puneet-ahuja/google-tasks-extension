@@ -16,9 +16,16 @@
 }
 
 .task-detail-notes {
-    border: 1px solid black;
-    border-radius: 3px;
-    padding: 10px;
+    position: relative;
+}
+
+.task-detail-notes::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 20px;
+    width: calc( 100% - 40px );
+    border-top: 1px solid #dadce0;
 }
 
 .react-datetime-picker__wrapper {
@@ -29,4 +36,33 @@
 
 .date-time-style {
     margin: 10px 20px;
+}
+
+.task-detail-description-header {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.task-detail-description-icon {
+    height: 20px;
+    width: 20px;
+    margin: 10px 15px;
+}
+
+.task-detail-description-title {
+    font-size: 20px;
+}
+
+.task-detail-description {
+    margin-left: 40px;
+    font-size: 14px !important;
+    line-height: 18px !important;
+    width: calc( 100% - 62px) !important;
+    padding: 2px 10px;
+}
+
+.task-detail-description:hover {
+    border: 1px solid black !important;
+    border-radius: 4px;
 }

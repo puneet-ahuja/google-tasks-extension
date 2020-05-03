@@ -157,6 +157,25 @@ export const insertTaskAPI = (listId, title) => {
   )
 }
 
+/**
+ * Function to update Data on Google APIs.
+ * @param {Id of TaskList} tasklist 
+ * @param {ID of the Task} task 
+ * @param {Complete Details.} taskdetails 
+ */
+export const updateTask = (tasklist, task , taskdetails) => {
+  return window.gapi.client.tasks.tasks.update({
+    tasklist,
+    task,
+    ...taskdetails
+  }).then(
+    res => res
+  )
+  .catch(
+    err=> console.log('There is error while Updating. TAsks API.', err)
+  )
+}
+
           
 export const handleAuthClick = (event) => {
   if(window.gapi.auth2.getAuthInstance()){

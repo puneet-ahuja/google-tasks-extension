@@ -4,7 +4,7 @@ export default (state = {}, action) => {
         return {
             ...state,
           [action.listId]:action.list
-    }
+        }
       default:
         return state
     }

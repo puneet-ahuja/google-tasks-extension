@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './index.css';
 import PropTypes from 'prop-types';
+import classnames from 'classnames'
 
-const TextArea = ({ onBlur, value: initialValue, placeholder, maxLines, fontSize }) => {
+const TextArea = ({ onBlur, value: initialValue, placeholder, maxLines, fontSize, className, id }) => {
 
     // TODO : P5 : Need to verify if we can improve performance of this max lines.
     const MAX_LINES = maxLines;
@@ -18,13 +19,13 @@ const TextArea = ({ onBlur, value: initialValue, placeholder, maxLines, fontSize
             setValue(initialValue);
             setHeight('');
         },
-        [initialValue]
+        [initialValue, id]
     )
 
     const ref = useRef(null);
     
     const getHeight = (scrollHeight, lineHeight) => {
-        const lines = (scrollHeight-4)/26;
+        const lines = (scrollHeight-4)/lineHeight;
 
         return (Math.min(lines, MAX_LINES) * lineHeight) + 'px';
     }
@@ -39,7 +40,6 @@ const TextArea = ({ onBlur, value: initialValue, placeholder, maxLines, fontSize
             if(newHeight !== height){
                 setHeight(newHeight)
             }
-            
         }
     }
     useEffect(
@@ -57,11 +57,12 @@ const TextArea = ({ onBlur, value: initialValue, placeholder, maxLines, fontSize
       <textarea
         ref={ref}
         rows={1}
-        className='text-area'
+        className={classnames('text-area',className)}
         value={value}
         placeholder={placeholder}
         onChange={onChange}
         style={textAreaStyle}
+        onBlur={() => onBlur(value)}
       />
     );
   }
@@ -71,7 +72,9 @@ const TextArea = ({ onBlur, value: initialValue, placeholder, maxLines, fontSize
         value: PropTypes.string,
         placeholder: PropTypes.string,
         maxLines: PropTypes.number,
-        fontSize: PropTypes.number
+        fontSize: PropTypes.number,
+        className: PropTypes.string,
+        id: PropTypes.string
   }
 
   TextArea.defaultProps = {

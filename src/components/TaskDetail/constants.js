@@ -1,0 +1,1 @@
+export const DESCRIPTION_ICON_IMAGE = 'https://cdn0.iconfinder.com/data/icons/free-daily-icon-set/512/TaskStroke-512.png';
