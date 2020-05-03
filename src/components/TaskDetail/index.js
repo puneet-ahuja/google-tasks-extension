@@ -4,16 +4,21 @@ import './index.css'
 import { calendarIcon } from '../../constants/svgs';
 import TaskDetailPlaceHolder from './components/TaskDetailPlaceHolder';
 import TextArea from '../../components/CommonComponents/TextArea';
-import DateTimePicker from 'react-datetime-picker';
+import DatePicker from 'react-datepicker';
 import { updateTask as updateTaskAPI } from '../../GoogleAPI'
 import { updateTaskList } from './utils'
-import { DESCRIPTION_ICON_IMAGE } from './constants'
+import { DESCRIPTION_ICON_IMAGE } from './constants';
+import "react-datepicker/dist/react-datepicker.css";
+import { formatDate, parseISOString } from '../../utils/date';
+import Tag from '../CommonComponents/Tag';
 
 const TaskDetail = ({task, listId, tasklist, setTasklist}) => {
 
-    const { id, title, notes } = task;
+    const { id, title, notes, due } = task;
+    let formattedDueDate = '';
 
-    const [ showDateTimePicker, setShowDateTimePicker ]= useState(false);
+    const [ showDatePicker, setShowDatePicker ]= useState(false);
+    const [ selectedDate, setSelectedDate ] = useState(null)
 
     // TODO : P5 : Need to update this value. Good naming required.
     const updateTask = updateValues => {
@@ -29,6 +34,15 @@ const TaskDetail = ({task, listId, tasklist, setTasklist}) => {
         )
     }
 
+    const onDateChangeHandler = date => {
+        setSelectedDate(date);
+        updateTask({ due: date.toISOString() })
+    }
+
+    if(due){
+        formattedDueDate = formatDate(parseISOString(due));
+    }
+
     if(!id){
         return <TaskDetailPlaceHolder />
     }
@@ -41,15 +55,26 @@ const TaskDetail = ({task, listId, tasklist, setTasklist}) => {
                 />
                 <div
                     className={'calendar-icon'}
-                    onClick={()=>setShowDateTimePicker(!showDateTimePicker)}
+                    onClick={()=>setShowDatePicker(!showDatePicker)}
                 >
                     {calendarIcon}
                 </div>
             </div>
-            {showDateTimePicker && 
-                <DateTimePicker
-                    onChange={()=>console.log('Date Time changed')}
+            {showDatePicker && 
+                <DatePicker
+                    selected={selectedDate}
+                    onChange={onDateChangeHandler}
                     className={'date-time-style'}
+                    placeholderText="Click to select a date"
+                    dateFormat="d-MM-yyyy"
+                />
+            }
+            {formattedDueDate && 
+                <Tag
+                    title={formattedDueDate}
+                    showCalendarIcon
+                    showCross
+                    onCrossClick={()=>updateTask({due:undefined})}
                 />
             }
             <div className='task-detail-notes'>
