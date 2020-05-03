@@ -10,7 +10,17 @@ import { ItemTypes, DropZones } from '../../constants/dragAndDrop';
 /***
  * Task Card Component to handle Drag and Drop
  */
-const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, restoreList, editable, insertTask}) => {
+const TaskCard = ({
+    task,
+    selected,
+    setSelectedTask,
+    styleClass,
+    moveTask,
+    restoreList,
+    editable,
+    insertTask,
+    selectedTaskId
+}) => {
     const { title, notes, id } = task;
     // TODO : P5 : Need more grooming on this.
     /**
@@ -156,6 +166,8 @@ const TaskCard = ({ task, selected, setSelectedTask, styleClass, moveTask, resto
                 styleClass='child-task-card' 
                 moveTask={moveTask}
                 restoreList={restoreList}
+                setSelectedTask={setSelectedTask}
+                selected={subtask.id === selectedTaskId}
             />)}
         </div>
     )
@@ -167,7 +179,8 @@ TaskCard.propTypes = {
     selected: PropTypes.bool,
     moveTask: PropTypes.func.isRequired,
     restoreList: PropTypes.func.isRequired,
-    insertTask: PropTypes.func
+    insertTask: PropTypes.func,
+    selectedTaskId: PropTypes.string.isRequired
 }
 
 TaskCard.defaultProps = {
