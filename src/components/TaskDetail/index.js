@@ -37,7 +37,7 @@ const TaskDetail = ({task, listId, tasklist, setTasklist}) => {
             <div className='task-detail-header'>
                 <TextArea
                     value={title}
-                    onBlur={()=>console.log('On Blur Called Here')}
+                    onBlur={(value)=>updateTask({title:value})}
                 />
                 <div
                     className={'calendar-icon'}
